@@ -8,10 +8,16 @@ class TestAuthority(TestCase):
         super(TestAuthority, self).setUp()
         self.valid_full = Authority.objects.get(pk=1)
         self.valid_no_initial = Authority.objects.get(pk=2)
+        self.lower_initial = Authority.objects.get(pk=3)
 
     def test_full_name_initial(self):
         self.assertTrue(self.valid_full.full_name() == "John Q. Doe") 
         self.assertTrue(self.valid_no_initial.full_name() == "John Doe") 
+
+    def test_lowercase_initial(self):
+        self.lower_initial.save()
+        self.assertTrue(self.lower_initial.initial == \
+            self.lower_initial.initial.upper())
 
 class TestHost(TestCase):
     fixtures = ['fixtures.json']
