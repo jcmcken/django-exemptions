@@ -5,7 +5,7 @@ from django.utils import timezone
 class ExemptionForm(forms.ModelForm):
     class Meta:
         model = Exemption
-        fields = [ 'authority', 'hosts', 'expires', 'description' ]
+        fields = [ 'authority', 'hosts', 'expires', 'request', 'response', 'approved' ]
 
     def clean_expires(self):
         expires = self.cleaned_data['expires']

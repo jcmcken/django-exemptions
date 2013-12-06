@@ -49,8 +49,9 @@
   "fields": {
     "authority": 1,
     "expires": "2013-05-28T03:48:11Z",
-    "description": "Foo bar",
     "hosts": [1],
+    "request": "foo",
+    "response": "bar",
     "created_at": "2013-05-28T03:48:11Z", 
     "updated_at": "2013-05-28T07:01:19Z"
   }

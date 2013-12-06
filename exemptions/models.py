@@ -58,5 +58,7 @@ class Host(TimestampedModel):
 class Exemption(TimestampedModel):
     authority = models.ForeignKey(Authority, blank=False)
     expires = models.DateTimeField(blank=False)
-    description = models.TextField(blank=False)
+    request = models.TextField(blank=False)
+    response = models.TextField(blank=False)
     hosts = models.ManyToManyField(Host)
+    approved = models.BooleanField(default=False)

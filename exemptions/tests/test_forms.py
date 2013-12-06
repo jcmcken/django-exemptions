@@ -68,7 +68,8 @@ class TestExemptionForm(TestCase):
             'authority': 1,
             'hosts': [1],
             'expires': timezone.now() + self.timedelta,
-            'description': 'foo',
+            'request': 'foo',
+            'response': 'bar',
         })
 
     def test_initial_conditions(self):
