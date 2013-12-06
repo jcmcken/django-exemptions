@@ -43,6 +43,9 @@ class TestExemption(TestCase):
         self.host = Host.objects.get(pk=1)
         self.authority = Authority.objects.get(pk=1)
 
+    def test_expiration(self):
+        self.assertTrue(self.exemption.expired())
+
     def test_host_relation(self):
         hosts = self.exemption.hosts.all()
         self.assertTrue(len(hosts) == 1)

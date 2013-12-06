@@ -62,3 +62,6 @@ class Exemption(TimestampedModel):
     response = models.TextField(blank=False)
     hosts = models.ManyToManyField(Host)
     approved = models.BooleanField(default=False)
+
+    def expired(self):
+        return self.expires < timezone.now()
