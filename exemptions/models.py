@@ -17,8 +17,8 @@ class TimestampedModel(models.Model):
 
 class Authority(TimestampedModel):
     first_name = models.CharField(max_length=255, blank=False)
-    last_name = models.CharField(max_length=255, blank=False)
     initial = models.CharField(max_length=1, blank=True)
+    last_name = models.CharField(max_length=255, blank=False)
     email = models.EmailField(blank=False)
 
     class Meta:
