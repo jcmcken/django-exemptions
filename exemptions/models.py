@@ -26,6 +26,8 @@ class Authority(TimestampedModel):
 
     def save(self):
         self.initial = self.initial.upper()
+        self.first_name = self.first_name.capitalize()
+        self.last_name = self.last_name.capitalize()
         super(Authority, self).save()
 
     def full_name(self):
