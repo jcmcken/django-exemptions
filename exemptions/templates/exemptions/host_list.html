@@ -1,0 +1,26 @@
+<h1>Hosts</h1>
+<table>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>IP Address</td>
+      <td>Unique ID</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for host in object_list %}
+    <tr>
+      <td>{{ host.name }}</td>
+      <td>{{ host.ip }}</td>
+      <td>{{ host.unique_id }}</td>
+      <td>
+        <a href="{% url "host_edit" host.id %}">Edit</a>
+        <a href="{% url "host_delete" host.id %}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  <tbody>
+</table>
+
+<a href="{% url "host_new" %}">New</a>
