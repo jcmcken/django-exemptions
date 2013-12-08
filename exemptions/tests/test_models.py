@@ -1,5 +1,8 @@
 from django.test import TestCase
 from exemptions.models import Authority, Host, Exemption
+from django.core import exceptions
+from django.utils import timezone
+import datetime
 
 class TestAuthority(TestCase):
     fixtures = ['fixtures.json']
@@ -8,16 +11,20 @@ class TestAuthority(TestCase):
         super(TestAuthority, self).setUp()
         self.valid_full = Authority.objects.get(pk=1)
         self.valid_no_initial = Authority.objects.get(pk=2)
-        self.lower_initial = Authority.objects.get(pk=3)
+        self.lower_name = Authority.objects.get(pk=3)
 
     def test_full_name_initial(self):
         self.assertTrue(self.valid_full.full_name() == "John Q. Doe") 
         self.assertTrue(self.valid_no_initial.full_name() == "John Doe") 
 
     def test_lowercase_initial(self):
-        self.lower_initial.save()
-        self.assertTrue(self.lower_initial.initial == \
-            self.lower_initial.initial.upper())
+        self.lower_name.save()
+        self.assertTrue(self.lower_name.initial == \
+            self.lower_name.initial.upper())
+        self.assertTrue(self.lower_name.first_name[0] == \
+            self.lower_name.first_name[0].upper())
+        self.assertTrue(self.lower_name.last_name[0] == \
+            self.lower_name.last_name[0].upper())
 
 class TestHost(TestCase):
     fixtures = ['fixtures.json']
@@ -45,6 +52,7 @@ class TestExemption(TestCase):
 
     def test_expiration(self):
         self.assertTrue(self.exemption.expired())
+        self.assertRaises(exceptions.ValidationError, self.exemption.save)
 
     def test_host_relation(self):
         hosts = self.exemption.hosts.all()
