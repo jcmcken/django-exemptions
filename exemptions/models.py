@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 import datetime
 import logging
+from exemptions.validators import validate_not_in_past
 
 LOG = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ class Host(TimestampedModel):
 
 class Exemption(TimestampedModel):
     authority = models.ForeignKey(Authority, blank=False)
-    expires = models.DateTimeField(blank=False)
+    expires = models.DateTimeField(blank=False, validators=[validate_not_in_past])
     request = models.TextField(blank=False)
     response = models.TextField(blank=False)
     hosts = models.ManyToManyField(Host)
