@@ -16,7 +16,21 @@ class TimestampedModel(models.Model):
     class Meta:
         abstract = True
 
-class Authority(TimestampedModel):
+# See ``http://www.xormedia.com/django-model-validation-on-save``
+class ValidateOnSaveMixin(object):
+    # Because Django doesn't validate on calls to ``save`` by default..
+    # ( WTF? )
+    def save(self, force_insert=False, force_update=False, **kwargs):
+        if not (force_insert or force_update):
+            self.full_clean()
+        super(ValidateOnSaveMixin, self).save(force_insert, force_update,
+                                              **kwargs)
+
+class ModelBase(ValidateOnSaveMixin, TimestampedModel):
+    class Meta:
+        abstract = True
+
+class Authority(ModelBase):
     first_name = models.CharField(max_length=255, blank=False)
     initial = models.CharField(max_length=1, blank=True)
     last_name = models.CharField(max_length=255, blank=False)
@@ -45,7 +59,7 @@ class Authority(TimestampedModel):
     def __unicode__(self):
         return u"%s" % self.full_id()
 
-class Host(TimestampedModel):
+class Host(ModelBase):
     name = models.CharField(max_length=255, blank=False,
         verbose_name='Hostname')
     ip = models.GenericIPAddressField(blank=False, verbose_name='IP Address')
@@ -61,7 +75,7 @@ class Host(TimestampedModel):
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.ip)
 
-class Exemption(TimestampedModel):
+class Exemption(ModelBase):
     authority = models.ForeignKey(Authority, blank=False)
     expires = models.DateTimeField(blank=False, validators=[validate_not_in_past])
     request = models.TextField(blank=False)
