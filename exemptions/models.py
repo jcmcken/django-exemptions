@@ -42,6 +42,9 @@ class Authority(TimestampedModel):
     def full_id(self):
         return "%s <%s>" % (self.full_name(), self.email)
 
+    def __unicode__(self):
+        return u"%s" % self.full_id()
+
 class Host(TimestampedModel):
     name = models.CharField(max_length=255, blank=False,
         verbose_name='Hostname')
