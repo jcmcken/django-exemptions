@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from exemptions.views import host as host_views
 from exemptions.views import exemption as exemption_views
-from exemptions.views import authority as authority_views
+from exemptions.views import user as user_views
 
 host_urls = patterns('',
   url(r'^$', host_views.HostList.as_view(), name='host_list'),
@@ -18,15 +18,15 @@ exemption_urls = patterns('',
   url(r'^delete/(?P<pk>\d+)$', exemption_views.ExemptionDelete.as_view(), name='exemption_delete'),
 )
 
-authority_urls = patterns('',
-  url(r'^$', authority_views.AuthorityList.as_view(), name='authority_list'),
-  url(r'^new$', authority_views.AuthorityCreate.as_view(), name='authority_new'),
-  url(r'^edit/(?P<pk>\d+)$', authority_views.AuthorityUpdate.as_view(), name='authority_edit'),
-  url(r'^delete/(?P<pk>\d+)$', authority_views.AuthorityDelete.as_view(), name='authority_delete'),
+user_urls = patterns('',
+  url(r'^$', user_views.UserList.as_view(), name='user_list'),
+  url(r'^new$', user_views.UserCreate.as_view(), name='user_new'),
+  url(r'^edit/(?P<pk>\d+)$', user_views.UserUpdate.as_view(), name='user_edit'),
+  url(r'^delete/(?P<pk>\d+)$', user_views.UserDelete.as_view(), name='user_delete'),
 )
 
 urlpatterns = patterns('',
     url(r'^hosts/', include(host_urls)),
-    url(r'^authorities/', include(authority_urls)),
+    url(r'^users/', include(user_urls)),
     url(r'', include(exemption_urls)),
 )

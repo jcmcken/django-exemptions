@@ -1,17 +1,17 @@
 from django.test import TestCase
-from exemptions.models import Authority, Host, Exemption
+from exemptions.models import User, Host, Exemption
 from django.core import exceptions
 from django.utils import timezone
 import datetime
 
-class TestAuthority(TestCase):
+class TestUser(TestCase):
     fixtures = ['fixtures.json']
 
     def setUp(self):
-        super(TestAuthority, self).setUp()
-        self.valid_full = Authority.objects.get(pk=1)
-        self.valid_no_initial = Authority.objects.get(pk=2)
-        self.lower_name = Authority.objects.get(pk=3)
+        super(TestUser, self).setUp()
+        self.valid_full = User.objects.get(pk=1)
+        self.valid_no_initial = User.objects.get(pk=2)
+        self.lower_name = User.objects.get(pk=3)
 
     def test_full_name_initial(self):
         self.assertTrue(self.valid_full.full_name() == "John Q. Doe") 
@@ -48,7 +48,7 @@ class TestExemption(TestCase):
         super(TestExemption, self).setUp()
         self.exemption = Exemption.objects.get(pk=1)
         self.host = Host.objects.get(pk=1)
-        self.authority = Authority.objects.get(pk=1)
+        self.user = User.objects.get(pk=1)
 
     def test_expiration(self):
         self.assertTrue(self.exemption.expired())
@@ -61,7 +61,7 @@ class TestExemption(TestCase):
         self.assertTrue(hosts[0].ip == self.host.ip)
         self.assertTrue(hosts[0].pk == self.host.pk)
 
-    def test_authority_relation(self):
-        authority = self.exemption.authority
-        self.assertTrue(authority == self.authority)
-        self.assertTrue(authority.pk == self.authority.pk)
+    def test_user_relation(self):
+        user = self.exemption.requestor
+        self.assertTrue(user == self.user)
+        self.assertTrue(user.pk == self.user.pk)

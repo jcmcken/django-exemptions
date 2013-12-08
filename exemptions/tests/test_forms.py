@@ -1,5 +1,5 @@
 from django.test import TestCase
-from exemptions.forms import HostForm, AuthorityForm, ExemptionForm
+from exemptions.forms import HostForm, UserForm, ExemptionForm
 from exemptions.models import Host
 from django.utils import timezone
 import datetime
@@ -27,9 +27,9 @@ class TestHostForm(TestCase):
         self.form.data['name'] = (Host._meta.get_field('name').max_length + 1) * 'a'
         self.assertFalse(self.form.is_valid())
 
-class TestAuthorityForm(TestCase):
+class TestUserForm(TestCase):
     def setUp(self):
-        self.form = AuthorityForm(data={
+        self.form = UserForm(data={
           'first_name': 'John',
           'initial': 'Q',
           'last_name': 'Doe',
@@ -65,7 +65,7 @@ class TestExemptionForm(TestCase):
     def setUp(self):
         self.timedelta = datetime.timedelta(weeks=2)
         self.form = ExemptionForm(data={
-            'authority': 1,
+            'requestor': 1,
             'hosts': [1],
             'expires': timezone.now() + self.timedelta,
             'request': 'foo',

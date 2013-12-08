@@ -3,19 +3,24 @@
   <thead>
     <tr>
       <td>Authority</td>
+      <td>Requestor</td>
       <td>Expires</td>
       <td>Hosts Affected</td>
       <td>Approved</td>
+      <td>Date Approved</td>
       <td></td>
     </tr>
   </thead>
   <tbody>
     {% for exemption in object_list %}
     <tr>
-      <td>{{ exemption.authority.full_name }}</td>
+      <td>{{ exemption.authority.full_name }}
+      </td>
+      <td>{{ exemption.requestor.full_name }}</td>
       <td>{{ exemption.expires }}</td>
       <td>{{ exemption.hosts.count }}</td>
       <td>{{ exemption.approved }}</td>
+      <td>{{ exemption.date_approved }}</td>
       <td>
         <a href="{% url "exemption_edit" exemption.id %}">Edit</a>
         <a href="{% url "exemption_delete" exemption.id %}">Delete</a>

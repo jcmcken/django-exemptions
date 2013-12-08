@@ -22,35 +22,47 @@
 },
 {
   "pk": 1, 
-  "model": "exemptions.authority", 
+  "model": "exemptions.user", 
   "fields": {
     "first_name": "John",
     "initial": "Q",
     "last_name": "Doe",
-    "email": "johnqdoe@gmail.com",
+    "email": "johnqdoe1@gmail.com",
     "created_at": "2013-05-28T03:48:11Z", 
     "updated_at": "2013-05-28T07:01:19Z"
   }
 },
 {
   "pk": 2, 
-  "model": "exemptions.authority", 
+  "model": "exemptions.user", 
   "fields": {
     "first_name": "John",
     "last_name": "Doe",
-    "email": "johndoe@gmail.com",
+    "email": "johndoe2@gmail.com",
     "created_at": "2013-05-28T03:48:11Z", 
     "updated_at": "2013-05-28T07:01:19Z"
   }
 },
 {
   "pk": 3, 
-  "model": "exemptions.authority", 
+  "model": "exemptions.user", 
   "fields": {
     "first_name": "john",
     "initial": "q",
     "last_name": "doe",
-    "email": "johndoe@gmail.com",
+    "email": "johndoe3@gmail.com",
+    "created_at": "2013-05-28T03:48:11Z", 
+    "updated_at": "2013-05-28T07:01:19Z"
+  }
+},
+{
+  "pk": 4, 
+  "model": "exemptions.user", 
+  "fields": {
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "is_authority": true,
+    "email": "janedoe@gmail.com",
     "created_at": "2013-05-28T03:48:11Z", 
     "updated_at": "2013-05-28T07:01:19Z"
   }
@@ -59,6 +71,7 @@
   "pk": 1, 
   "model": "exemptions.exemption", 
   "fields": {
+    "requestor": 1,
     "authority": 1,
     "expires": "2013-05-28T03:48:11Z",
     "hosts": [1],

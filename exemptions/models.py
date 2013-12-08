@@ -4,6 +4,7 @@ from django.utils import timezone
 import datetime
 import logging
 from exemptions.validators import validate_not_in_past
+from django.core.exceptions import ValidationError
 
 LOG = logging.getLogger(__name__)
 
@@ -30,20 +31,18 @@ class ModelBase(ValidateOnSaveMixin, TimestampedModel):
     class Meta:
         abstract = True
 
-class Authority(ModelBase):
+class User(ModelBase):
     first_name = models.CharField(max_length=255, blank=False)
     initial = models.CharField(max_length=1, blank=True)
     last_name = models.CharField(max_length=255, blank=False)
-    email = models.EmailField(blank=False)
-
-    class Meta:
-        verbose_name_plural = 'authorities'
+    email = models.EmailField(blank=False, unique=True)
+    is_authority = models.BooleanField(default=False) 
 
     def save(self):
         self.initial = self.initial.upper()
         self.first_name = self.first_name.capitalize()
         self.last_name = self.last_name.capitalize()
-        super(Authority, self).save()
+        super(User, self).save()
 
     def full_name(self):
         if self.initial:
@@ -76,12 +75,27 @@ class Host(ModelBase):
         return "%s (%s)" % (self.name, self.ip)
 
 class Exemption(ModelBase):
-    authority = models.ForeignKey(Authority, blank=False)
+    authority = models.ForeignKey(User, blank=True, null=True, related_name='exemptions')
+    requestor = models.ForeignKey(User, blank=False, related_name='requests')
     expires = models.DateTimeField(blank=False, validators=[validate_not_in_past])
     request = models.TextField(blank=False)
     response = models.TextField(blank=False)
     hosts = models.ManyToManyField(Host)
     approved = models.BooleanField(default=False)
+    date_approved = models.DateTimeField(blank=True, null=True, editable=False)
 
     def expired(self):
         return self.expires < timezone.now()
+
+    def clean(self):
+        # don't let a non-authoritative user approve a request
+        if self.authority and not self.authority.is_authority:
+            raise ValidationError('%s does not have permission to approve this'
+                                  ' request' % self.authority.full_name()) 
+
+        if self.approved:
+            if not self.authority:
+                raise ValidationError('must select an approving authority')
+            if not self.date_approved:
+                # auto-set the approval date
+                self.date_approved = timezone.now()

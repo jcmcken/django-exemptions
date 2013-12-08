@@ -1,0 +1,30 @@
+<h1>Users</h1>
+<table>
+  <thead>
+    <tr>
+      <td>Authority</td>
+      <td>First Name</td>
+      <td>Middle Initial</td>
+      <td>Last Name</td>
+      <td>Email</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in object_list %}
+    <tr>
+      <td>{{ user.is_authority }}</td>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.initial }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <a href="{% url "user_edit" user.id %}">Edit</a>
+        <a href="{% url "user_delete" user.id %}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  <tbody>
+</table>
+
+<a href="{% url "user_new" %}">New</a>
